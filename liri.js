@@ -1,6 +1,8 @@
 //this allows us access to our keys
 require("dotenv").config();
 var keys = require("./keys.js");
+var axios = require("axios");
+
 
 //Grab command line instructions and set up switch statement
 var command = process.argv[2].toLowerCase();
@@ -19,18 +21,13 @@ switch (command) {
     //uses fs to take what is inside of random.txt to call one of the commands
     //example of spotify this song I Want it That Way
     break;
-  //END OF DO-WHAT-IT-SAYS
 
   case "concert-this":
-    //BEGINNING OF CONCERT-THIS
-    //access to moment to format date (MM/DD/YYYY) and keys
-    //search BandsinTown API
-    //display name of venue, venue location and date of event 
+    concertThis();
     break;
-  //END OF CONCERT THIS
 
   default:
-    console.log("Please input a valid instruction!");
+    console.log("Please input a valid instruction such as movie-this, spotify-this-song, concert-this or do-what-it-says!");
 
 }
 
@@ -38,7 +35,6 @@ switch (command) {
 function movieThis() {
 
   //require axios to grab from API and grab users input
-  var axios = require("axios");
   var movieName = process.argv.slice(3).join("+");
 
   //set default to "Mr. Nobody"
@@ -68,27 +64,53 @@ function movieThis() {
 }
 
 //BEGINNGING SPOTIFY-THIS-SONG 
-function spotifyThis () {
+function spotifyThis() {
 
-    //require spotify and access ids
-    var Spotify = require('node-spotify-api');
-    var spotifyThis = new Spotify(keys.spotify);
-    //display artist, song name, preview link, the album
-    var song = process.argv.slice(3).join(" ");
+  //require spotify and access ids
+  var Spotify = require('node-spotify-api');
+  var spotifyThis = new Spotify(keys.spotify);
+  //display artist, song name, preview link, the album
+  var song = process.argv.slice(3).join(" ");
 
-    //set default to "The Sign" by Ace of Base
-    if (song === "") {
-      song = "the sign ace of base";
+  //set default to "The Sign" by Ace of Base
+  if (song === "") {
+    song = "the sign ace of base";
+  }
+
+  //reequest from spotify
+  spotifyThis.search({ type: 'track', query: song, limit: 1 }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
     }
+    console.log("The artist is: " + data.tracks.items[0].album.artists[0].name);
+    console.log("The song title is: " + data.tracks.items[0].name);
+    console.log("The song comes from the album: " + data.tracks.items[0].album.name);
+    console.log("Listen to a preview!" + data.tracks.items[0].preview_url);
+  });
 
-    spotifyThis.search({ type: 'track', query: song, limit: 1 }, function (err, data) {
-      if (err) {
-        return console.log('Error occurred: ' + err);
+}
+
+//BEGINNING OF CONCERT-THIS
+function concertThis() {
+  //access to moment to format date (MM/DD/YYYY) and axios (global)
+
+   var moment = require("moment");
+  var artist = process.argv.slice(3).join("%20");
+  var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+  //search BandsinTown API
+  axios.get(queryUrl).then(
+    function (response, error) {
+      if (error) {
+        console.log(error);
+      } else {
+
+        for (var i = 0; i < response.data.length; i++) {
+          console.log(response.data[i].venue.name);
+          console.log(response.data[i].venue.city + ", " + response.data[i].venue.country);
+          console.log(moment(response.data[i].datetime).format("MM/DD/YYYY"));
+          console.log("---------------------------------------------");
+        }
       }
-      console.log("The artist is: " + data.tracks.items[0].album.artists[0].name);
-      console.log("The song title is: " + data.tracks.items[0].name);
-      console.log("The song comes from the album: "+ data.tracks.items[0].album.name);
-      console.log("Listen to a preview!" + data.tracks.items[0].preview_url);
-    });
-
+    }
+  )
 }
