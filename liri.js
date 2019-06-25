@@ -85,7 +85,6 @@ function spotifyThis () {
       if (err) {
         return console.log('Error occurred: ' + err);
       }
-      console.log(data.tracks.items[0])
       console.log("The artist is: " + data.tracks.items[0].album.artists[0].name);
       console.log("The song title is: " + data.tracks.items[0].name);
       console.log("The song comes from the album: "+ data.tracks.items[0].album.name);
