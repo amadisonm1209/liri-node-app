@@ -6,10 +6,10 @@
 
 **Acceptable commands liri understands include:**
 
-spotify-this-song  -- followed by the name of song you want to search
-concert-this -- followed by name of band or artist
-movie-this -- followed by movie title
-do-what-it-says 
+* spotify-this-song  -- followed by the name of song you want to search
+* concert-this -- followed by name of band or artist
+* movie-this -- followed by movie title
+* do-what-it-says 
 
 **The following information will be returned**
 
@@ -18,7 +18,7 @@ spotify-this:
 * Song Name
 * Preview URL from Spotify 
 * Album Name
-*(If no song is provided, the default is "The Sign" by Ace of Base)*
+**(If no song is provided, the default is "The Sign" by Ace of Base)*
 
 concert-this:
 * Name of Venue
@@ -34,10 +34,13 @@ movie-this:
 * Language
 * Plot
 * Actors
-*(If no movie is provided, the default is "Mr. Nobody")*
+**(If no movie is provided, the default is "Mr. Nobody")*
+
+do-what-it-says:
+This command will actually read it's command from whatever you put in the random.txt file! For example, typed in there currently is "concert-this,local natives" which will return concert information utilizing the Bands in Town API without the user having to input infomation on the command line.
 
 ### Technologies Used
-I used: NodeJS, JavaScript, Spotify NPM package, Bands in Town API, OMDB API, NPM Axios, NPM dotenv, Moment NPM package
+NodeJS, JavaScript, Spotify NPM package, Bands in Town API, OMDB API, NPM Axios, NPM dotenv, Moment NPM package
 
 ### Liri in Action
 
