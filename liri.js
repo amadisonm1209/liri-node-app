@@ -17,9 +17,7 @@ switch (command) {
     break;
 
   case "do-what-it-says":
-    //BEGINNING OF DO-WHAT-IT-SAYS COMMAND
-    //uses fs to take what is inside of random.txt to call one of the commands
-    //example of spotify this song I Want it That Way
+    doThis();
     break;
 
   case "concert-this":
@@ -50,10 +48,10 @@ function movieThis() {
     function (response) {
       //display title, year, imdb rating, rotten tomato rating, country, language, plot and actors
       console.log("This movie is titled: " + response.data.Title);
-      console.log("This movie was released in: " + response.data.Year);
-      console.log("This movie has an IMDB rating of: " + response.data.imdbRating);
-      console.log("This movie has a Rotten Tomatoes rating of: " + response.data.Ratings[1].Value);
-      console.log("This movie was produced in: " + response.data.Country);
+      console.log("It was released in: " + response.data.Year);
+      console.log("It has an IMDB rating of: " + response.data.imdbRating);
+      console.log("And a Rotten Tomatoes rating of: " + response.data.Ratings[1].Value);
+      console.log("It was produced in: " + response.data.Country);
       console.log("This movie is in: " + response.data.Language);
       console.log("The plot of this movie is: " + response.data.Plot);
       console.log("This movie features: " + response.data.Actors);
@@ -61,9 +59,10 @@ function movieThis() {
     .catch(function (error) {
       console.log(error);
     });
-}
+};
 
-//BEGINNGING SPOTIFY-THIS-SONG 
+
+//BEGINNING SPOTIFY-THIS-SONG 
 function spotifyThis() {
 
   //require spotify and access ids
@@ -88,13 +87,14 @@ function spotifyThis() {
     console.log("Listen to a preview!" + data.tracks.items[0].preview_url);
   });
 
-}
+};
+
 
 //BEGINNING OF CONCERT-THIS
 function concertThis() {
   //access to moment to format date (MM/DD/YYYY) and axios (global)
 
-   var moment = require("moment");
+  var moment = require("moment");
   var artist = process.argv.slice(3).join("%20");
   var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
   //search BandsinTown API
@@ -102,15 +102,56 @@ function concertThis() {
     function (response, error) {
       if (error) {
         console.log(error);
-      } else {
-
+      } else if (response.data !== null) {
         for (var i = 0; i < response.data.length; i++) {
           console.log(response.data[i].venue.name);
           console.log(response.data[i].venue.city + ", " + response.data[i].venue.country);
           console.log(moment(response.data[i].datetime).format("MM/DD/YYYY"));
           console.log("---------------------------------------------");
-        }
+        };
+        //for when BandsinTown doesn't have concerts available for a band 
+      } else {
+        console.log("Looks like they aren't touring right meow, try again next year!");
       }
     }
   )
+};
+
+//BEGINNING OF DO-WHAT-IT-SAYS COMMAND
+
+function doThis() {
+  //uses fs to take what is inside of random.txt to call one of the commands
+  var fs = require("fs");
+
+  fs.readFile("random.txt", "utf8", function (error, response) {
+    if (error) {
+      return console.log(error);
+    }
+    var commandArr = response.split(",");
+
+    switch (commandArr[0]) {
+      case ("spotify-this-song"):
+        //sets the variable as the value to search
+        process.argv[3] = commandArr[1];
+        return spotifyThis();
+
+      case "movie-this":
+        process.argv[3] = commandArr[1];
+        return movieThis(commandArr[1]);
+
+      case "do-what-it-says":
+        return console.log("You gotta give me something to work with! Try again!");
+
+      case "concert-this":
+        process.argv[3] = commandArr[1];
+        return concertThis(commandArr[1]);
+
+      default:
+        console.log("Please input a valid instruction such as movie-this, spotify-this-song, or concert-this inside the random.txt file!");
+
+    }
+
+  })
+  //example of spotify this song I Want it That Way
+
 }
