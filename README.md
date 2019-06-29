@@ -20,10 +20,14 @@ spotify-this:
 * Album Name
 **(If no song is provided, the default is "The Sign" by Ace of Base)*
 
+![](gifs/spotify-this-song.gif)
+
 concert-this:
 * Name of Venue
 * Venue Location
 * Date of Event
+
+![](gifs/concert-this.gif)
 
 movie-this:
 * Title of the Movie
@@ -36,8 +40,12 @@ movie-this:
 * Actors
 **(If no movie is provided, the default is "Mr. Nobody")*
 
+![](gifs/movie-this.gif)
+
 do-what-it-says:
 This command will actually read it's command from whatever you put in the random.txt file! For example, typed in there currently is "concert-this,local natives" which will return concert information utilizing the Bands in Town API without the user having to input infomation on the command line.
+
+![](gifs/do-what.gif)
 
 ### Technologies Used
 NodeJS, JavaScript, Spotify NPM package, Bands in Town API, OMDB API, NPM Axios, NPM dotenv, Moment NPM package
