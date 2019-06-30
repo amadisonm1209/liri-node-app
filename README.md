@@ -50,5 +50,6 @@ This command will actually read it's command from whatever you put in the random
 ### Technologies Used
 NodeJS, JavaScript, Spotify NPM package, Bands in Town API, OMDB API, NPM Axios, NPM dotenv, Moment NPM package
 
-### Liri in Action
+### To Get Started Using Liri
+Clone this repository and navigate to the liri-node-app file in your Terminal or Bash! Using Node and the liri.js file, tell liri your command (ex. movie-this) and a movie and watch the magic!
 
